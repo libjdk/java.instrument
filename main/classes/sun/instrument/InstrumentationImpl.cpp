@@ -608,6 +608,7 @@ bool InstrumentationImpl::isNativeMethodPrefixSupported() {
 
 void InstrumentationImpl::setNativeMethodPrefix($ClassFileTransformer* transformer, $String* prefix) {
 	$synchronized(this) {
+		$useLocalCurrentObjectStackCache();
 		if (!isNativeMethodPrefixSupported()) {
 			$throwNew($UnsupportedOperationException, "setNativeMethodPrefix is not supported in this environment"_s);
 		}
@@ -625,6 +626,7 @@ void InstrumentationImpl::setNativeMethodPrefix($ClassFileTransformer* transform
 }
 
 void InstrumentationImpl::redefineModule($Module* module, $Set* extraReads$renamed, $Map* extraExports$renamed, $Map* extraOpens$renamed, $Set* extraUses$renamed, $Map* extraProvides$renamed) {
+	$useLocalCurrentObjectStackCache();
 	$var($Map, extraExports, extraExports$renamed);
 	$var($Set, extraReads, extraReads$renamed);
 	$var($Map, extraOpens, extraOpens$renamed);
@@ -704,6 +706,7 @@ void InstrumentationImpl::redefineModule($Module* module, $Set* extraReads$renam
 }
 
 $Map* InstrumentationImpl::cloneAndCheckMap($Module* module, $Map* map) {
+	$useLocalCurrentObjectStackCache();
 	if ($nc(map)->isEmpty()) {
 		return $Collections::emptyMap();
 	}
@@ -828,6 +831,7 @@ void InstrumentationImpl::setAccessible($AccessibleObject* ao, bool accessible) 
 }
 
 void InstrumentationImpl::loadClassAndStartAgent($String* classname, $String* methodname, $String* optionsString) {
+	$useLocalCurrentObjectStackCache();
 	$beforeCallerSensitive();
 	$var($ClassLoader, mainAppLoader, $ClassLoader::getSystemClassLoader());
 	$Class* javaAgentClass = $nc(mainAppLoader)->loadClass(classname);
@@ -882,6 +886,7 @@ void InstrumentationImpl::loadClassAndCallAgentmain($String* classname, $String*
 }
 
 $bytes* InstrumentationImpl::transform($Module* module$renamed, $ClassLoader* loader, $String* classname, $Class* classBeingRedefined, $ProtectionDomain* protectionDomain, $bytes* classfileBuffer, bool isRetransformer) {
+	$useLocalCurrentObjectStackCache();
 	$var($Module, module, module$renamed);
 	$var($TransformerManager, mgr, isRetransformer ? this->mRetransfomableTransformerManager : this->mTransformerManager);
 	if (module == nullptr) {
@@ -937,6 +942,7 @@ void InstrumentationImpl::lambda$redefineModule$1($Module* module, $Module* m) {
 
 void InstrumentationImpl::lambda$redefineModule$0($Module* module, $Class* service, $Class* p) {
 	$init(InstrumentationImpl);
+	$useLocalCurrentObjectStackCache();
 	if ($nc(p)->getModule() != module) {
 		$throwNew($IllegalArgumentException, $$str({p, " not in "_s, module}));
 	}

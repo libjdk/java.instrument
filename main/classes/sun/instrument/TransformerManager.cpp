@@ -87,6 +87,7 @@ bool TransformerManager::isRetransformable() {
 
 void TransformerManager::addTransformer($ClassFileTransformer* transformer) {
 	$synchronized(this) {
+		$useLocalCurrentObjectStackCache();
 		$var($TransformerManager$TransformerInfoArray, oldList, this->mTransformerList);
 		$var($TransformerManager$TransformerInfoArray, newList, $new($TransformerManager$TransformerInfoArray, $nc(oldList)->length + 1));
 		$System::arraycopy(oldList, 0, newList, 0, oldList->length);
@@ -97,6 +98,7 @@ void TransformerManager::addTransformer($ClassFileTransformer* transformer) {
 
 bool TransformerManager::removeTransformer($ClassFileTransformer* transformer) {
 	$synchronized(this) {
+		$useLocalCurrentObjectStackCache();
 		bool found = false;
 		$var($TransformerManager$TransformerInfoArray, oldList, this->mTransformerList);
 		int32_t oldLength = $nc(oldList)->length;
@@ -125,6 +127,7 @@ bool TransformerManager::removeTransformer($ClassFileTransformer* transformer) {
 
 bool TransformerManager::includesTransformer($ClassFileTransformer* transformer) {
 	$synchronized(this) {
+		$useLocalCurrentObjectStackCache();
 		{
 			$var($TransformerManager$TransformerInfoArray, arr$, this->mTransformerList);
 			int32_t len$ = $nc(arr$)->length;
@@ -147,6 +150,7 @@ $TransformerManager$TransformerInfoArray* TransformerManager::getSnapshotTransfo
 }
 
 $bytes* TransformerManager::transform($Module* module, $ClassLoader* loader, $String* classname, $Class* classBeingRedefined, $ProtectionDomain* protectionDomain, $bytes* classfileBuffer) {
+	$useLocalCurrentObjectStackCache();
 	bool someoneTouchedTheBytecode = false;
 	$var($TransformerManager$TransformerInfoArray, transformerList, getSnapshotTransformerList());
 	$var($bytes, bufferToUse, classfileBuffer);
@@ -179,6 +183,7 @@ int32_t TransformerManager::getTransformerCount() {
 }
 
 bool TransformerManager::setNativeMethodPrefix($ClassFileTransformer* transformer, $String* prefix) {
+	$useLocalCurrentObjectStackCache();
 	$var($TransformerManager$TransformerInfoArray, transformerList, getSnapshotTransformerList());
 	for (int32_t x = 0; x < $nc(transformerList)->length; ++x) {
 		$var($TransformerManager$TransformerInfo, transformerInfo, transformerList->get(x));
@@ -192,6 +197,7 @@ bool TransformerManager::setNativeMethodPrefix($ClassFileTransformer* transforme
 }
 
 $StringArray* TransformerManager::getNativeMethodPrefixes() {
+	$useLocalCurrentObjectStackCache();
 	$var($TransformerManager$TransformerInfoArray, transformerList, getSnapshotTransformerList());
 	$var($StringArray, prefixes, $new($StringArray, $nc(transformerList)->length));
 	for (int32_t x = 0; x < transformerList->length; ++x) {
