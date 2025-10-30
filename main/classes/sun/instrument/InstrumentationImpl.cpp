@@ -1,23 +1,11 @@
 #include <sun/instrument/InstrumentationImpl.h>
 
 #include <java/io/Serializable.h>
-#include <java/lang/Array.h>
-#include <java/lang/Class.h>
-#include <java/lang/ClassInfo.h>
 #include <java/lang/ClassLoader.h>
-#include <java/lang/CompoundAttribute.h>
-#include <java/lang/FieldInfo.h>
 #include <java/lang/IllegalAccessException.h>
-#include <java/lang/IllegalArgumentException.h>
-#include <java/lang/InnerClassInfo.h>
-#include <java/lang/MethodInfo.h>
 #include <java/lang/Module.h>
 #include <java/lang/NoSuchMethodException.h>
-#include <java/lang/NullPointerException.h>
-#include <java/lang/String.h>
-#include <java/lang/System.h>
 #include <java/lang/UnsupportedOperationException.h>
-#include <java/lang/Void.h>
 #include <java/lang/instrument/ClassDefinition.h>
 #include <java/lang/instrument/ClassFileTransformer.h>
 #include <java/lang/instrument/Instrumentation.h>
@@ -28,7 +16,6 @@
 #include <java/lang/invoke/MethodHandles$Lookup.h>
 #include <java/lang/invoke/MethodType.h>
 #include <java/lang/reflect/AccessibleObject.h>
-#include <java/lang/reflect/Constructor.h>
 #include <java/lang/reflect/Executable.h>
 #include <java/lang/reflect/Method.h>
 #include <java/lang/reflect/Modifier.h>
@@ -839,23 +826,19 @@ void InstrumentationImpl::loadClassAndStartAgent($String* classname, $String* me
 	$var($NoSuchMethodException, firstExc, nullptr);
 	bool twoArgAgent = false;
 	try {
-			$load($String);
-			$load($Instrumentation);
+		$load($Instrumentation);
 		$assign(m, $nc(javaAgentClass)->getDeclaredMethod(methodname, $$new($ClassArray, {
 			$String::class$,
 			$Instrumentation::class$
 		})));
 		twoArgAgent = true;
-	} catch ($NoSuchMethodException&) {
-		$var($NoSuchMethodException, x, $catch());
+	} catch ($NoSuchMethodException& x) {
 		$assign(firstExc, x);
 	}
 	if (m == nullptr) {
 		try {
-			$load($String);
 			$assign(m, $nc(javaAgentClass)->getDeclaredMethod(methodname, $$new($ClassArray, {$String::class$})));
-		} catch ($NoSuchMethodException&) {
-			$var($NoSuchMethodException, x, $catch());
+		} catch ($NoSuchMethodException& x) {
 			$throw(firstExc);
 		}
 	}

@@ -17,8 +17,10 @@ public:
 	void init$($String* msg);
 	static const int64_t serialVersionUID = (int64_t)0x5FEE2CF5D157A0C4;
 	UnmodifiableModuleException(const UnmodifiableModuleException& e);
-	UnmodifiableModuleException wrapper$();
-	virtual void throwWrapper$() override;
+	virtual void throw$() override;
+	inline UnmodifiableModuleException* operator ->() {
+		return (UnmodifiableModuleException*)throwing$;
+	}
 };
 
 		} // instrument

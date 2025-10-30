@@ -1,19 +1,8 @@
 #include <sun/instrument/TransformerManager.h>
 
-#include <java/lang/Array.h>
-#include <java/lang/Class.h>
-#include <java/lang/ClassInfo.h>
 #include <java/lang/ClassLoader.h>
-#include <java/lang/FieldInfo.h>
-#include <java/lang/InnerClassInfo.h>
-#include <java/lang/MethodInfo.h>
 #include <java/lang/Module.h>
-#include <java/lang/String.h>
-#include <java/lang/System.h>
-#include <java/lang/Throwable.h>
 #include <java/lang/instrument/ClassFileTransformer.h>
-#include <java/lang/reflect/Constructor.h>
-#include <java/lang/reflect/Method.h>
 #include <java/security/ProtectionDomain.h>
 #include <sun/instrument/TransformerManager$TransformerInfo.h>
 #include <jcpp.h>
@@ -160,8 +149,7 @@ $bytes* TransformerManager::transform($Module* module, $ClassLoader* loader, $St
 		$var($bytes, transformedBytes, nullptr);
 		try {
 			$assign(transformedBytes, $nc(transformer)->transform(module, loader, classname, classBeingRedefined, protectionDomain, bufferToUse));
-		} catch ($Throwable&) {
-			$catch();
+		} catch ($Throwable& t) {
 		}
 		if (transformedBytes != nullptr) {
 			someoneTouchedTheBytecode = true;

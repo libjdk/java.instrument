@@ -1,13 +1,5 @@
 #include <java/lang/instrument/UnmodifiableClassException.h>
 
-#include <java/lang/Class.h>
-#include <java/lang/ClassInfo.h>
-#include <java/lang/Exception.h>
-#include <java/lang/FieldInfo.h>
-#include <java/lang/MethodInfo.h>
-#include <java/lang/String.h>
-#include <java/lang/reflect/Constructor.h>
-#include <java/lang/reflect/Method.h>
 #include <jcpp.h>
 
 using $ClassInfo = ::java::lang::ClassInfo;
@@ -54,16 +46,10 @@ void UnmodifiableClassException::init$($String* s) {
 UnmodifiableClassException::UnmodifiableClassException() {
 }
 
-UnmodifiableClassException::UnmodifiableClassException(const UnmodifiableClassException& e) {
+UnmodifiableClassException::UnmodifiableClassException(const UnmodifiableClassException& e) : $Exception(e) {
 }
 
-UnmodifiableClassException UnmodifiableClassException::wrapper$() {
-	$pendingException(this);
-	return *this;
-}
-
-void UnmodifiableClassException::throwWrapper$() {
-	$pendingException(this);
+void UnmodifiableClassException::throw$() {
 	throw *this;
 }
 
